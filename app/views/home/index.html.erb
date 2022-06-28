@@ -19,7 +19,7 @@
         center: myLatLng,
       });
 
-    const contentString = ""
+    const contentString = "<label for='my-modal' class='btn modal-button'>open modal</label>"
 
       const infowindow = new google.maps.InfoWindow({
           content: contentString,
@@ -41,6 +41,19 @@
     }
   </script>
   <div id="map"></div>
+
+  <div id="info_box">
+    <input type="checkbox" id="my-modal" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">〇〇注意!</h3>
+        <p class="py-4">何かしらの注意点、ポイントを記述するよ!</p>
+        <div class="modal-action">
+          <label for="my-modal" class="btn">閉じる!</label>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- 
     The `defer` attribute causes the callback to execute after the full HTML
