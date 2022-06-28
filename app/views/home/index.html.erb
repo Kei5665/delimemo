@@ -1,0 +1,54 @@
+  <style>
+    #map {
+      height: 100%;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script>
+    function initMap() {
+      const myLatLng = { lat: 35.66611504149469, lng: 139.7763242422632 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: myLatLng,
+      });
+
+    const contentString = ""
+
+      const infowindow = new google.maps.InfoWindow({
+          content: contentString,
+        });
+
+      const marker = new google.maps.Marker({
+        position: myLatLng,
+        map,
+      });
+
+      marker.addListener("click", () => {
+          infowindow.open({
+            anchor: marker,
+            map,
+            shouldFocus: true,
+          });
+        });
+
+    }
+  </script>
+  <div id="map"></div>
+
+  <!-- 
+    The `defer` attribute causes the callback to execute after the full HTML
+    document has been parsed. For non-blocking uses, avoiding race conditions,
+    and consistent behavior across browsers, consider loading using Promises
+    with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+  -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_KEY'] %>&callback=initMap&v=weekly"
+    defer
+  ></script>
