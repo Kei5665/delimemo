@@ -12,45 +12,55 @@
     }
   </style>
   <script>
+
     function initMap() {
+      let marker = [];
+      const jdata = JSON.parse(gon.json);
+      const infoWindow = [];
+
       const myLatLng = { lat: 35.66611504149469, lng: 139.7763242422632 };
       const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 15,
         center: myLatLng,
       });
 
-    const contentString = "<label for='my-modal' class='btn modal-button'>open modal</label>"
-
-      const infowindow = new google.maps.InfoWindow({
-          content: contentString,
-        });
-
-      const marker = new google.maps.Marker({
-        position: myLatLng,
-        map,
-      });
-
-      marker.addListener("click", () => {
-          infowindow.open({
-            anchor: marker,
-            map,
-            shouldFocus: true,
+          // マーカー毎の処理
+    for (var i = 0; i < jdata.length; i++) {
+            markerLatLng = new google.maps.LatLng({lat: JSON.parse(jdata[i]['latlng'])['lat'], lng: JSON.parse(jdata[0]['latlng'])['lng']}); // 緯度経度のデータ作成
+            marker[i] = new google.maps.Marker({ // マーカーの追加
+            position: markerLatLng, // マーカーを立てる位置を指定
+            map: map // マーカーを立てる地図を指定
           });
-        });
+
+          const contentString = '<div class="card w-96 bg-base-100 shadow-xl">'+
+                  '<div class="card-body">'+
+                    '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+
+                    '<p class="text-lg">'+jdata[i]["body"]+'</p>'+
+                  '</div>'+
+                '</div>'
+    
+          infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
+              content: contentString // 吹き出しに表示する内容
+            });    
+        markerEvent(i); // マーカーにクリックイベントを追加
+    }
+    
+    // マーカーにクリックイベントを追加
+    function markerEvent(i) {
+        marker[i].addListener('click', function() { // マーカーをクリックしたとき
+          infoWindow[i].open(map, marker[i]); // 吹き出しの表示
+      });
+    }
 
       map.addListener("click", addLatLng);
 
       function addLatLng(event) {
-
-        //デバッグで値確認するコード-------
         const lat = event.latLng.lat();
         const lng = event.latLng.lng();
         const data = {
           lat,
           lng
         }
-        console.log(JSON.stringify(data))
-        //-----------------
 
         document.getElementById('latlng').value = JSON.stringify(data) ;
         
@@ -76,18 +86,13 @@
     };
   }
   </script>
-  <div id="map"></div>
+  <script>
+    // console.log(gon.json)
+    // const jdata = JSON.parse(gon.json)
+    // console.log(jdata[0]["latlng"])
 
-  <input type="checkbox" id="my-modal" class="modal-toggle" />
-  <div class="modal">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg">〇〇注意!</h3>
-      <p class="py-4">何かしらの注意点、ポイントを記述するよ!</p>
-      <div class="modal-action">
-        <label for="my-modal" class="btn">閉じる!</label>
-      </div>
-    </div>
-  </div>
+</script>
+  <div id="map"></div>
 
   <input type="checkbox" id="my-new-modal" class="modal-toggle" />
   <div class="modal">
