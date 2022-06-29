@@ -38,19 +38,67 @@
           });
         });
 
-    }
+      map.addListener("click", addLatLng);
+
+      function addLatLng(event) {
+
+        //デバッグで値確認するコード-------
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+        console.log({lat, lng})
+
+        const data = {
+          lat,
+          lng
+        }
+        console.log(JSON.stringify(data))
+        //-----------------
+        
+        const newMarker = new google.maps.Marker({
+          position: event.latLng,
+          map: map,
+      });
+
+    const newContentString = "<label for='my-new-modal' class='btn modal-button'>ここにレビューを書く</label>"
+
+      const newInfowindow = new google.maps.InfoWindow({
+          content: newContentString,
+        });
+
+        newMarker.addListener("click", () => {
+            newInfowindow.open({
+              anchor: newMarker,
+              map,
+              shouldFocus: true,
+            });
+          });
+      
+    };
+  }
   </script>
   <div id="map"></div>
 
-  <div id="info_box">
-    <input type="checkbox" id="my-modal" class="modal-toggle" />
-    <div class="modal">
-      <div class="modal-box">
-        <h3 class="font-bold text-lg">〇〇注意!</h3>
-        <p class="py-4">何かしらの注意点、ポイントを記述するよ!</p>
-        <div class="modal-action">
-          <label for="my-modal" class="btn">閉じる!</label>
-        </div>
+  <input type="checkbox" id="my-modal" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">〇〇注意!</h3>
+      <p class="py-4">何かしらの注意点、ポイントを記述するよ!</p>
+      <div class="modal-action">
+        <label for="my-modal" class="btn">閉じる!</label>
+      </div>
+    </div>
+  </div>
+
+  <input type="checkbox" id="my-new-modal" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">レビュー作成</h3>
+      <p class="py-4">キーワード</p>
+      <input type="text" placeholder="Type here" class="input input-bordered input-warning w-full" />
+      <p class="py-4">詳細文</p>
+      <textarea class="textarea textarea-warning w-full" placeholder="Bio"></textarea>
+      <div class="modal-action">
+        <label for="my-new-modal" class="btn">閉じる!</label>
       </div>
     </div>
   </div>
