@@ -36,6 +36,9 @@
                   '<div class="card-body">'+
                     '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+
                     '<p class="text-lg">'+jdata[i]["body"]+'</p>'+
+                    '<div class="card-actions justify-end">'+
+                      '<a class="btn btn-primary" data-turbo-method="delete" href="/posts/'+jdata[i]["id"]+'">Delete</a>'+
+                    '</div>'+
                   '</div>'+
                 '</div>'
     
