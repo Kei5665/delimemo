@@ -45,14 +45,14 @@
         //デバッグで値確認するコード-------
         const lat = event.latLng.lat();
         const lng = event.latLng.lng();
-        console.log({lat, lng})
-
         const data = {
           lat,
           lng
         }
         console.log(JSON.stringify(data))
         //-----------------
+
+        document.getElementById('latlng').value = JSON.stringify(data) ;
         
         const newMarker = new google.maps.Marker({
           position: event.latLng,
@@ -92,14 +92,21 @@
   <input type="checkbox" id="my-new-modal" class="modal-toggle" />
   <div class="modal">
     <div class="modal-box">
-      <h3 class="font-bold text-lg">レビュー作成</h3>
-      <p class="py-4">キーワード</p>
-      <input type="text" placeholder="Type here" class="input input-bordered input-warning w-full" />
-      <p class="py-4">詳細文</p>
-      <textarea class="textarea textarea-warning w-full" placeholder="Bio"></textarea>
-      <div class="modal-action">
-        <label for="my-new-modal" class="btn">閉じる!</label>
+
+    <h3 class="font-bold text-lg">レビュー作成</h3>
+    <%= form_with model: @post,class:'new_post',local: true do |f|%>
+    <turbo-frame id="post_error"></turbo-frame>
+      <div>
+        <%= f.label :title %>
+        <%= f.text_field :title,class:'input input-bordered input-warning w-full' %>
+        <%= f.label :body %>
+        <%= f.text_area :body,class:'textarea textarea-warning w-full', rows: 5  %>
+        <%= f.hidden_field :latlng,class:'input input-bordered input-warning w-full', id: 'latlng' %>
       </div>
+      <%= f.submit class:'btn'%>
+      <label for="my-new-modal" class="btn">閉じる!</label>
+    <%end%> 
+
     </div>
   </div>
 
