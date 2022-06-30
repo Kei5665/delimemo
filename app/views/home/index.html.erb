@@ -2,7 +2,6 @@
     #map {
       height: 100%;
     }
-
     /* Optional: Makes the sample page fill the window. */
     html,
     body {
@@ -22,6 +21,46 @@
       const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 15,
         center: myLatLng,
+        disableDefaultUI: true,
+      });
+
+      // 検索ボックス
+      map.controls[google.maps.ControlPosition.RIGHT_TOP].push(
+          document.getElementById('bar'));
+      var autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById('autoc'));
+      autocomplete.bindTo('bounds', map);
+      autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        if (place.geometry.viewport) {
+
+          map.fitBounds(place.geometry.viewport);
+          const newContentString = "<label for='my-new-modal' class='btn modal-button'>ここにレビューを書く</label>"
+
+          const newInfowindow = new google.maps.InfoWindow({
+            content: newContentString,
+          });
+          const sMarker = new google.maps.Marker({
+          position: place.geometry.location,
+          map: map,});
+
+          sMarker.addListener("click", () => {
+            newInfowindow.open({
+              anchor: sMarker,
+              map,
+              shouldFocus: true,
+            });
+          // 削除イベント
+          newInfowindow.addListener( "closeclick", function ( argument ) {
+            sMarker.setMap(null);
+          } ) ;
+      
+          });
+
+        } else {
+          map.setCenter(place.geometry.location);
+          map.setZoom(17);
+        }
       });
 
           // マーカー毎の処理
@@ -43,8 +82,8 @@
                 '</div>'
     
           infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
-              content: contentString // 吹き出しに表示する内容
-            });    
+              content: '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+'<label for="my-modal-'+jdata[i]["id"]+'" class="btn modal-button">詳細をみる</label>'
+            });
         markerEvent(i); // マーカーにクリックイベントを追加
     }
     
@@ -85,17 +124,38 @@
               shouldFocus: true,
             });
           });
+
+        // 削除イベント
+        newInfowindow.addListener( "closeclick", function ( argument ) {
+          newMarker.setMap(null);
+        } ) ;
       
     };
   }
   </script>
-  <script>
-    // console.log(gon.json)
-    // const jdata = JSON.parse(gon.json)
-    // console.log(jdata[0]["latlng"])
+<div id="map"></div>
 
-</script>
-  <div id="map"></div>
+  <div id="bar" class="w-full">
+    <div class="form-control">
+      <label class="input-group">
+        <span class="btn">候補から選んで！</span>
+        <input type="text" id="autoc" class="input input-bordered"/>
+      </label>
+    </div>
+  </div>
+
+<% @posts.each do |post| %>
+<input type="checkbox" id="my-modal-<%=post.id%>" class="modal-toggle" />
+<div class="modal" id="my-modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg"><%=post.title%></h3>
+    <p class="py-4"><%=post.body%></p>
+    <div class="modal-action">
+      <label for="my-modal-<%=post.id%>" class="btn">Yay!</label>
+    </div>
+  </div>
+</div>
+<%end%>
 
   <input type="checkbox" id="my-new-modal" class="modal-toggle" />
   <div class="modal">
@@ -125,6 +185,6 @@
     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
   -->
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_KEY'] %>&callback=initMap&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= ENV['GOOGLE_API_KEY'] %>&callback=initMap&v=weekly"
     defer
   ></script>
