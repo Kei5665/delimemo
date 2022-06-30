@@ -35,7 +35,7 @@
         if (place.geometry.viewport) {
 
           map.fitBounds(place.geometry.viewport);
-          const newContentString = "<label for='my-new-modal' class='btn modal-button'>ここにレビューを書く</label>"
+          const newContentString = "<label for='my-new-modal' class='btn btn-warning modal-button'>ここにレビューを書く</label>"
 
           const newInfowindow = new google.maps.InfoWindow({
             content: newContentString,
@@ -83,7 +83,7 @@
           });
     
           infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
-              content: '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+'<label for="my-modal-'+jdata[i]["id"]+'" class="btn modal-button">詳細をみる</label>'
+              content: '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+'<label for="my-modal-'+jdata[i]["id"]+'" class="btn btn-warning modal-button">詳細をみる</label>'
             });
         markerEvent(i); // マーカーにクリックイベントを追加
     }
@@ -106,15 +106,13 @@
         }
 
         document.getElementById('latlng').value = JSON.stringify(data) ;
-
-        console.log(JSON.stringify(data));
         
         const newMarker = new google.maps.Marker({
           position: event.latLng,
           map: map,
       });
 
-    const newContentString = "<label for='my-new-modal' class='btn modal-button'>ここにレビューを書く</label>"
+    const newContentString = "<label for='my-new-modal' class='btn btn-warning modal-button'>ここにメモを書く</label>"
 
       const newInfowindow = new google.maps.InfoWindow({
           content: newContentString,
@@ -141,7 +139,7 @@
   <div id="bar" class="w-full">
     <div class="form-control">
       <label class="input-group">
-        <span class="btn">候補から選んで！</span>
+        <span class="btn btn-warning">候補から選んでね！</span>
         <input type="text" id="autoc" class="input input-bordered"/>
       </label>
     </div>
@@ -153,10 +151,8 @@
   <div class="modal-box">
     <h3 class="font-bold text-lg"><%=post.title%></h3>
     <p class="py-4"><%=post.body%></p>
-    <div class="modal-action">
-      <label for="my-modal-<%=post.id%>" class="btn">閉じる</label>
-    </div>
-    <%= link_to '削除', post_path(post), data: { turbo_method: :delete }, class: 'btn btn-primary' %>
+    <%= link_to '削除', post_path(post), data: { turbo_method: :delete }, class: 'btn btn-error' %>
+    <label for="my-modal-<%=post.id%>" class="btn">閉じる</label>
   </div>
 </div>
 <%end%>
@@ -175,7 +171,7 @@
         <%= f.text_area :body,class:'textarea textarea-warning w-full', rows: 5  %>
         <%= f.hidden_field :latlng,class:'input input-bordered input-warning w-full', id: 'latlng' %>
       </div>
-      <%= f.submit class:'btn'%>
+      <%= f.submit class:'btn btn-warning'%>
       <label for="my-new-modal" class="btn">閉じる!</label>
     <%end%> 
 
