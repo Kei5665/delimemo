@@ -44,6 +44,17 @@
           position: place.geometry.location,
           map: map,});
 
+          console.log(place.geometry.location.lat());
+
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+          const data = {
+            lat,
+            lng
+          };
+        document.getElementById('latlng').value = JSON.stringify(data) ;
+
+
           sMarker.addListener("click", () => {
             newInfowindow.open({
               anchor: sMarker,
@@ -65,21 +76,11 @@
 
           // マーカー毎の処理
     for (var i = 0; i < jdata.length; i++) {
-            markerLatLng = new google.maps.LatLng({lat: JSON.parse(jdata[i]['latlng'])['lat'], lng: JSON.parse(jdata[0]['latlng'])['lng']}); // 緯度経度のデータ作成
+            markerLatLng = {lat: JSON.parse(jdata[i]['latlng'])['lat'], lng: JSON.parse(jdata[i]['latlng'])['lng']}; // 緯度経度のデータ作成
             marker[i] = new google.maps.Marker({ // マーカーの追加
             position: markerLatLng, // マーカーを立てる位置を指定
             map: map // マーカーを立てる地図を指定
           });
-
-          const contentString = '<div class="card w-96 bg-base-100 shadow-xl">'+
-                  '<div class="card-body">'+
-                    '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+
-                    '<p class="text-lg">'+jdata[i]["body"]+'</p>'+
-                    '<div class="card-actions justify-end">'+
-                      '<a class="btn btn-primary" data-turbo-method="delete" href="/posts/'+jdata[i]["id"]+'">Delete</a>'+
-                    '</div>'+
-                  '</div>'+
-                '</div>'
     
           infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
               content: '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+'<label for="my-modal-'+jdata[i]["id"]+'" class="btn modal-button">詳細をみる</label>'
@@ -105,6 +106,8 @@
         }
 
         document.getElementById('latlng').value = JSON.stringify(data) ;
+
+        console.log(JSON.stringify(data));
         
         const newMarker = new google.maps.Marker({
           position: event.latLng,
@@ -151,8 +154,9 @@
     <h3 class="font-bold text-lg"><%=post.title%></h3>
     <p class="py-4"><%=post.body%></p>
     <div class="modal-action">
-      <label for="my-modal-<%=post.id%>" class="btn">Yay!</label>
+      <label for="my-modal-<%=post.id%>" class="btn">閉じる</label>
     </div>
+    <%= link_to '削除', post_path(post), data: { turbo_method: :delete }, class: 'btn btn-primary' %>
   </div>
 </div>
 <%end%>
