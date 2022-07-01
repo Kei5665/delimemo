@@ -4,9 +4,9 @@ RSpec.describe "Posts", type: :system do
   describe '投稿機能' do
 
     describe '新規作成機能' do
-      it '正常に登録される' do
+      it '正常にタイトル、本文、画像が登録される' do
       end
-      it '正常に表示される' do
+      it '正常にタイトル、本文、画像が登録される表示される' do
       end  
     end
     
