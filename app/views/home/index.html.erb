@@ -40,7 +40,7 @@
             lng: position.coords.longitude,
           };
 
-          new google.maps.Marker({
+          const current_pos = new google.maps.Marker({
           position: pos,
           map: map,
           	icon: {
@@ -52,6 +52,11 @@
             strokeWeight: 1.0                    //枠の透過率
           },
           });
+
+          current_pos.addListener("click", () => {
+            current_pos.setMap(null);
+          });
+
 
           map.setCenter(pos);
         },
