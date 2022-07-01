@@ -1,0 +1,191 @@
+  <style>
+    #map {
+      height: 100%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script>
+
+    function initMap() {
+      let marker = [];
+      const jdata = JSON.parse(gon.json);
+      const infoWindow = [];
+
+      const Tokyo = { lat: 35.681427904704975, lng: 139.76717844133614 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: Tokyo,
+        disableDefaultUI: true,
+        gestureHandling: 'greedy',
+      });
+
+      // 検索ボックス
+      map.controls[google.maps.ControlPosition.RIGHT_TOP].push(
+          document.getElementById('bar'));
+      var autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById('autoc'));
+      autocomplete.bindTo('bounds', map);
+      autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        if (place.geometry.viewport) {
+
+          map.fitBounds(place.geometry.viewport);
+          const newContentString = "<label for='my-new-modal' class='btn btn-warning modal-button'>ここにメモを書く</label>"
+
+          const newInfowindow = new google.maps.InfoWindow({
+            content: newContentString,
+          });
+          const sMarker = new google.maps.Marker({
+          position: place.geometry.location,
+          map: map,});
+
+          console.log(place.geometry.location.lat());
+
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+          const data = {
+            lat,
+            lng
+          };
+        document.getElementById('latlng').value = JSON.stringify(data) ;
+
+
+          sMarker.addListener("click", () => {
+            newInfowindow.open({
+              anchor: sMarker,
+              map,
+              shouldFocus: true,
+            });
+          // 削除イベント
+          newInfowindow.addListener( "closeclick", function ( argument ) {
+            sMarker.setMap(null);
+          } ) ;
+      
+          });
+
+        } else {
+          map.setCenter(place.geometry.location);
+          map.setZoom(17);
+        }
+      });
+
+          // マーカー毎の処理
+    for (var i = 0; i < jdata.length; i++) {
+            markerLatLng = {lat: JSON.parse(jdata[i]['latlng'])['lat'], lng: JSON.parse(jdata[i]['latlng'])['lng']}; // 緯度経度のデータ作成
+            marker[i] = new google.maps.Marker({ // マーカーの追加
+            position: markerLatLng, // マーカーを立てる位置を指定
+            map: map // マーカーを立てる地図を指定
+          });
+    
+          infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
+              content: '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+'<label for="my-modal-'+jdata[i]["id"]+'" class="btn btn-warning modal-button">詳細をみる</label>'
+            });
+        markerEvent(i); // マーカーにクリックイベントを追加
+    }
+    
+    // マーカーにクリックイベントを追加
+    function markerEvent(i) {
+        marker[i].addListener('click', function() { // マーカーをクリックしたとき
+          infoWindow[i].open(map, marker[i]); // 吹き出しの表示
+      });
+    }
+
+      map.addListener("click", addLatLng);
+
+      function addLatLng(event) {
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+        const data = {
+          lat,
+          lng
+        }
+
+        document.getElementById('latlng').value = JSON.stringify(data) ;
+        
+        const newMarker = new google.maps.Marker({
+          position: event.latLng,
+          map: map,
+      });
+
+    const newContentString = "<label for='my-new-modal' class='btn btn-warning modal-button'>ここにメモを書く</label>"
+
+      const newInfowindow = new google.maps.InfoWindow({
+          content: newContentString,
+        });
+
+        newMarker.addListener("click", () => {
+            newInfowindow.open({
+              anchor: newMarker,
+              map,
+              shouldFocus: true,
+            });
+          });
+
+        // 削除イベント
+        newInfowindow.addListener( "closeclick", function ( argument ) {
+          newMarker.setMap(null);
+        } ) ;
+      
+    };
+  }
+  </script>
+<div id="map"></div>
+
+  <div id="bar" class="w-full">
+    <div class="form-control">
+      <label class="input-group">
+        <span class="btn btn-warning">候補から選んでね！</span>
+        <input type="text" id="autoc" class="input input-bordered"/>
+      </label>
+    </div>
+  </div>
+
+<% @posts.each do |post| %>
+<input type="checkbox" id="my-modal-<%=post.id%>" class="modal-toggle" />
+<div class="modal" id="my-modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg"><%=post.title%></h3>
+    <p class="py-4"><%=post.body%></p>
+    <%= link_to '削除', post_path(post), data: { turbo_method: :delete }, class: 'btn btn-error' %>
+    <label for="my-modal-<%=post.id%>" class="btn">閉じる</label>
+  </div>
+</div>
+<%end%>
+
+  <input type="checkbox" id="my-new-modal" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-box">
+
+    <h3 class="font-bold text-lg">レビュー作成</h3>
+    <%= form_with model: @post,class:'new_post',local: true do |f|%>
+    <turbo-frame id="post_error"></turbo-frame>
+      <div>
+        <%= f.label :title %>
+        <%= f.text_field :title,class:'input input-bordered input-warning w-full' %>
+        <%= f.label :body %>
+        <%= f.text_area :body,class:'textarea textarea-warning w-full', rows: 5  %>
+        <%= f.hidden_field :latlng,class:'input input-bordered input-warning w-full', id: 'latlng' %>
+      </div>
+      <%= f.submit class:'btn btn-warning'%>
+      <label for="my-new-modal" class="btn">閉じる!</label>
+    <%end%> 
+
+    </div>
+  </div>
+
+  <!-- 
+    The `defer` attribute causes the callback to execute after the full HTML
+    document has been parsed. For non-blocking uses, avoiding race conditions,
+    and consistent behavior across browsers, consider loading using Promises
+    with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+  -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= ENV['GOOGLE_API_KEY'] %>&callback=initMap&v=weekly"
+    defer
+  ></script>

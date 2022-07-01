@@ -1,0 +1,12 @@
+ja:
+  activerecord:
+    models:
+      post: '投稿'
+    attributes:
+      post:
+        title: 'タイトル'
+        body: '詳細'
+  attributes:
+    id: 'ID'
+    created_at: '作成日時'
+    updated_at: '更新日時'
