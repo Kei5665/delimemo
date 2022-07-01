@@ -152,6 +152,9 @@
   <div class="modal-box">
     <h3 class="font-bold text-lg"><%=post.title%></h3>
     <p class="py-4"><%=post.body%></p>
+    <% if post.image.attached? %>
+      <%= image_tag post.image %>
+    <% end %>
     <%= link_to '削除', post_path(post), data: { turbo_method: :delete }, class: 'btn btn-error' %>
     <label for="my-modal-<%=post.id%>" class="btn">閉じる</label>
   </div>
@@ -170,6 +173,8 @@
         <%= f.text_field :title,class:'input input-bordered input-warning w-full' %>
         <%= f.label :body %>
         <%= f.text_area :body,class:'textarea textarea-warning w-full', rows: 5  %>
+        <%= f.label :image %>
+        <%= f.file_field :image %>
         <%= f.hidden_field :latlng,class:'input input-bordered input-warning w-full', id: 'latlng' %>
       </div>
       <%= f.submit class:'btn btn-warning'%>
