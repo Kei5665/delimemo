@@ -31,6 +31,39 @@
         gestureHandling: 'greedy',
       });
 
+    // 現在地の取得
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          new google.maps.Marker({
+          position: pos,
+          map: map,
+          	icon: {
+            fillColor: "yellow",                //塗り潰し色
+            fillOpacity: 0.8,                    //塗り潰し透過率
+            path: google.maps.SymbolPath.CIRCLE, //円を指定
+            scale: 16,                           //円のサイズ
+            strokeColor: "black",              //枠の色
+            strokeWeight: 1.0                    //枠の透過率
+          },
+          });
+
+          map.setCenter(pos);
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+
       // 検索ボックス
       map.controls[google.maps.ControlPosition.RIGHT_TOP].push(
           document.getElementById('bar'));
