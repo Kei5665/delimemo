@@ -9,6 +9,12 @@
       margin: 0;
       padding: 0;
     }
+    .gm-style .gm-style-iw-c {
+      padding:0;
+    }
+    .show-btn {
+      padding:12px;
+    }
   </style>
   <script>
 
@@ -36,7 +42,7 @@
         if (place.geometry.viewport) {
 
           map.fitBounds(place.geometry.viewport);
-          const newContentString = "<label for='my-new-modal' class='btn btn-warning modal-button'>ここにメモを書く</label>"
+          const newContentString = '<div class="show-btn">'+'<label for="my-new-modal" class="btn btn-warning modal-button">ここにメモを書く</label>'+'</div>'
 
           const newInfowindow = new google.maps.InfoWindow({
             content: newContentString,
@@ -84,7 +90,7 @@
           });
     
           infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
-              content: '<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+'<label for="my-modal-'+jdata[i]["id"]+'" class="btn btn-warning modal-button">詳細をみる</label>'
+              content: '<div class=show-btn>'+'<h2 class="font-bold text-lg">'+jdata[i]["title"]+'</h2>'+'<label for="my-modal-'+jdata[i]["id"]+'" class="btn btn-warning modal-button mb-4">詳細をみる</label>'+'</div>'
             });
         markerEvent(i); // マーカーにクリックイベントを追加
     }
@@ -113,7 +119,7 @@
           map: map,
       });
 
-    const newContentString = "<label for='my-new-modal' class='btn btn-warning modal-button'>ここにメモを書く</label>"
+    const newContentString = '<div class="show-btn">'+'<label for="my-new-modal" class="btn btn-warning modal-button">ここにメモを書く</label>'+'</div>'
 
       const newInfowindow = new google.maps.InfoWindow({
           content: newContentString,
