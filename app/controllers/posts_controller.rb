@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     if @post.save
-      redirect_to root_path
+      redirect_to root_path, success: "投稿に成功しました！"
     else
       render turbo_stream: turbo_stream.replace(
         'post_error',

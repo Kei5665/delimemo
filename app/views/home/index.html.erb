@@ -70,7 +70,7 @@
     }
 
       // 検索ボックス
-      map.controls[google.maps.ControlPosition.RIGHT_TOP].push(
+      map.controls[google.maps.ControlPosition.TOP].push(
           document.getElementById('bar'));
       var autocomplete = new google.maps.places.Autocomplete(
           document.getElementById('autoc'));
@@ -223,8 +223,7 @@
       </div>
       <%= f.submit class:'btn btn-warning'%>
       <label for="my-new-modal" class="btn">閉じる!</label>
-    <%end%> 
-
+    <%end%>
     </div>
   </div>
 
