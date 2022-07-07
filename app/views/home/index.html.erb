@@ -80,7 +80,7 @@
         if (place.geometry.viewport) {
 
           map.fitBounds(place.geometry.viewport);
-          const newContentString = '<div class="show-btn">'+'<label for="my-new-modal" class="btn btn-warning modal-button">ここにメモを書く</label>'+'</div>'
+          const newContentString = '<div class="show-btn">'+'<label for="my-stamp-modal" class="btn btn-warning modal-button">ゴールを設定する</label>'+'</div>'
 
           const newInfowindow = new google.maps.InfoWindow({
             content: newContentString,
@@ -157,7 +157,7 @@
           map: map,
       });
 
-    const newContentString = '<div class="show-btn">'+'<label for="my-new-modal" class="btn btn-warning modal-button">ここにメモを書く</label>'+'</div>'
+    const newContentString = '<div class="show-btn">'+'<label for="my-stamp-modal" class="btn btn-warning modal-button">ここにゴールを設定する</label>'+'</div>'
 
       const newInfowindow = new google.maps.InfoWindow({
           content: newContentString,
@@ -201,15 +201,17 @@
     <% end %>
     <%= link_to '削除', post_path(post), data: { turbo_method: :delete }, class: 'btn btn-error' %>
     <label for="my-modal-<%=post.id%>" class="btn">閉じる</label>
+    <%= link_to 'スタンプを押す', stamps_path(id: post.id), data: { turbo_method: :post }, class: 'btn btn-success' %>
+    <button class="btn">スタンプを押す</button>
   </div>
 </div>
 <%end%>
 
-  <input type="checkbox" id="my-new-modal" class="modal-toggle" />
+  <input type="checkbox" id="my-stamp-modal" class="modal-toggle" />
   <div class="modal">
     <div class="modal-box">
 
-    <h3 class="font-bold text-lg">レビュー作成</h3>
+    <h3 class="font-bold text-lg">スタンプの作成</h3>
     <%= form_with model: @post,class:'new_post',local: true do |f|%>
     <turbo-frame id="post_error"></turbo-frame>
       <div>
@@ -222,7 +224,7 @@
         <%= f.hidden_field :latlng,class:'input input-bordered input-warning w-full', id: 'latlng' %>
       </div>
       <%= f.submit class:'btn btn-warning'%>
-      <label for="my-new-modal" class="btn">閉じる!</label>
+      <label for="my-stamp-modal" class="btn">閉じる!</label>
     <%end%>
     </div>
   </div>
