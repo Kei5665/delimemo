@@ -1,6 +1,7 @@
 <input type="checkbox" id="my-modal-<%=post.id%>" class="modal-toggle" />
 <div class="modal" id="my-modal-<%=post.id%>">
   <div class="modal-box">
+    <p class="py-4"><%= post.user.name %></p>
     <h3 class="font-bold text-lg"><%=post.title%></h3>
     <p class="py-4"><%=post.body%></p>
     <% if post.image.attached? %>
