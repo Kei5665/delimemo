@@ -1,0 +1,10 @@
+<h1>プロフィール編集</h1>
+  <%= form_with model:@user, local: true do |f|%>
+    <div class="form-control">
+      <label class="input-group input-group-vertical">
+        <span>名前</span>
+        <%= f.text_field :name, class:'input input-bordered' %>
+      </label>
+    </div>
+  <%= f.submit '更新する', class:'btn'%>
+<%end%>

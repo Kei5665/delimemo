@@ -53,6 +53,8 @@ gem 'cssbundling-rails'
 gem 'gon'
 gem 'rails-i18n'
 gem "aws-sdk-s3", require: false
+gem 'sorcery'
+gem 'config'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

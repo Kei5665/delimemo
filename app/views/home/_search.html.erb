@@ -5,4 +5,10 @@
       <input type="text" id="autoc" class="input input-bordered"/>
     </label>
   </div>
+  <% if current_user %>
+    <%= link_to "ログアウト", log_out_path, class: "btn"%>
+    <%= link_to current_user.name, edit_user_path(current_user), class: "btn"%>
+  <%else%>
+    <%= link_to 'Googleでログイン', auth_at_provider_path(provider: :google), class: "btn"%>
+  <%end%>
 </div>
