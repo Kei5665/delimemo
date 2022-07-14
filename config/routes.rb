@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   
   resources :posts, only: %i[create show destroy]
   resources :stamps, only: %i[create]
+  resources :users, only: %i[edit update]
 end
