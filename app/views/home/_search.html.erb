@@ -5,8 +5,9 @@
       <input type="text" id="autoc" class="input input-bordered"/>
     </label>
   </div>
-  <%= link_to 'Login with Google', auth_at_provider_path(provider: :google) %>
+  <%= link_to 'Googleでログイン', auth_at_provider_path(provider: :google), class: "btn"%>
   <% if current_user %>
     <%= current_user.name %>さん
+    <%= link_to "ログアウト", log_out_path, class: "btn"%>
   <% end %>
 </div>
