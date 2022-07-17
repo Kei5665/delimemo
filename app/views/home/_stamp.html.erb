@@ -1,26 +1,11 @@
-<div class="card card-compact bg-base-100 shadow-xl">
-  <figure>
-  <% if post.image.attached? %>
-      <%= image_tag post.image %>
-    <% end %>
-  </figure>
-  <div class="card-body object-contain">
-    <h2 class="card-title"><%= post.title %></h2>
-    <p><%= post.body %></p>
-    <p><%= post.user.name %></p>
-    <div class="card-actions justify-end">
-      <button class="btn btn-success">Buy Now</button>
-    </div>
-  </div>
-</div>
-
-<div class="card card-compact bg-base-100 shadow-xl">
+<div class="card card-compact bg-base-100 shadow-xl my-5">
   <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
-  <div class="card-body">
-    <h2 class="card-title">Shoes!</h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
+  <div class="card-body object-contain">
+    <h2 class="card-title"><%=post.title%></h2>
+    <p><%=post.body%></p>
+    <p><%=post.user.name%></p>
     <div class="card-actions justify-end">
-      <button class="btn btn-primary">Buy Now</button>
+      <button class="btn btn-primary">スタンプをセットする</button>
     </div>
   </div>
 </div>
