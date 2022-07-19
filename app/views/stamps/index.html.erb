@@ -22,9 +22,9 @@
 
 <div id="map"></div>
 
-<%= render partial: 'home/post', collection: @posts %>
+<%= render 'posts/search'%>
 
-<%= render 'home/form'%>
+<%= render partial: 'posts/post', collection: @posts %>
 
     <script>
 
@@ -127,7 +127,7 @@
           map: map,
         });
         // 情報ウィンドウの中身はフォームのリンク
-        let formLink = '<div class="show-btn">'+'<label for="my-stamp-modal" class="btn btn-warning modal-button">ここにゴールを設定する</label>'+'</div>'
+        let formLink = '<div class="show-btn">'+'<label for="my-stamp-modal" class="btn btn-warning modal-button">ここにスタンプポイントを作成する</label>'+'</div>'
         const newInfowindow = new google.maps.InfoWindow({
           content: formLink,
         });
@@ -162,6 +162,7 @@
       if (distance <= 50.0) {
         calculateBtn.classList.add("disable");
         stampBtn.classList.remove("disable");
+        console.log(stampBtn)
       } else {
         stampValidate.classList.remove("disable");
       };

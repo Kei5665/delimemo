@@ -2,9 +2,7 @@ class PostsController < ApplicationController
   def index
     @post = Post.new
 
-    # スタンプを押してない投稿だけ取り出す
-    @posts = Post&.where(stamped: false)
-    gon.json = @posts.to_json
+    @posts = Post.all
   end
   
   def create
@@ -22,7 +20,8 @@ class PostsController < ApplicationController
 
   def stamped
     post = Post.find(params[:id])
-    current_user.stamps_posts << post
+    post.stamped = true
+    post.save!
     redirect_to root_path, success: "スタンプを完了しました！"
   end
 
