@@ -11,6 +11,10 @@ Rails.application.routes.draw do
       get :stamped
     end
   end
-  resources :stamps, only: %i[create]
+  resources :stamps do
+    member do
+      get :set
+    end
+  end
   resources :users, only: %i[edit update]
 end

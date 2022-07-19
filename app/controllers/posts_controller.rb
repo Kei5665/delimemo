@@ -14,8 +14,7 @@ class PostsController < ApplicationController
 
   def stamped
     post = Post.find(params[:id])
-    post.stamped = true
-    post.save!
+    current_user.stamps_posts << post
     redirect_to root_path, success: "スタンプを完了しました！"
   end
 

@@ -22,11 +22,9 @@
 
 <div id="map"></div>
 
-<%= render 'search'%>
+<%= render partial: 'home/post', collection: @posts %>
 
-<%= render partial: 'post', collection: @posts %>
-
-<%= render 'form'%>
+<%= render 'home/form'%>
 
     <script>
 
@@ -164,7 +162,6 @@
       if (distance <= 50.0) {
         calculateBtn.classList.add("disable");
         stampBtn.classList.remove("disable");
-        console.log(stampBtn)
       } else {
         stampValidate.classList.remove("disable");
       };
