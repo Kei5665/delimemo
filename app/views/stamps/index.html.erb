@@ -114,37 +114,6 @@
           infoWindow[i].open(map, marker[i]); // 吹き出しの表示
         });
       }
-
-      // クリックした場所にフォームを表示させる
-      map.addListener("click", showPostform);
-      function showPostform(event) {
-        let Position = event.latLng
-        // クリックした場所にマーカーを設置
-        let newMarker = new google.maps.Marker({
-          position: Position,
-          map: map,
-        });
-        // 情報ウィンドウの中身はフォームのリンク
-        let formLink = '<div class="show-btn">'+'<label for="my-stamp-modal" class="btn btn-warning modal-button">ここにスタンプポイントを作成する</label>'+'</div>'
-        const newInfowindow = new google.maps.InfoWindow({
-          content: formLink,
-        });
-        // クリックすると情報ウィンドウが出現
-        newMarker.addListener("click", () => {
-          newInfowindow.open({
-            anchor: newMarker,
-            map,
-            shouldFocus: true,
-          });
-        });
-        // 情報ウィンドウのバツボタンを押すとウィンドウが消えるイベントを追加
-        newInfowindow.addListener( "closeclick", function ( argument ) {
-          newMarker.setMap(null);
-        });
-        // フォームにクリックした場所の位置を送る
-        let formLatLng = document.getElementById('latlng');
-        formLatLng.value = JSON.stringify(Position);
-      };
     };
 
     // 現在位置とスタンプの距離をはかる
