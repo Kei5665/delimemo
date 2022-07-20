@@ -1,6 +1,6 @@
 class StampsController < ApplicationController
   def index
-    @posts = current_user.posts
+    @posts = current_user.posts.joins(:stamps).where(stamps: {stamped: false})
     gon.json = @posts.to_json
   end
 
