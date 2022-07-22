@@ -1,4 +1,10 @@
 class PostsController < ApplicationController
+  def index
+    @post = Post.new
+
+    @posts = Post.all
+  end
+  
   def create
     @post = current_user.posts.build(post_params)
     if @post.save
@@ -10,6 +16,13 @@ class PostsController < ApplicationController
         locals: { object: @post },
       )
     end
+  end
+
+  def stamped
+    post = Post.find(params[:id])
+    post.stamped = true
+    post.save!
+    redirect_to root_path, success: "スタンプを完了しました！"
   end
 
   def destroy

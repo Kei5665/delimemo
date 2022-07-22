@@ -1,7 +1,21 @@
 class StampsController < ApplicationController
-  def create
+  def index
+    @posts = current_user.posts.joins(:stamps).where(stamps: {stamped: false})
+    gon.json = @posts.to_json
+  end
+
+  def set
     post = Post.find(params[:id])
-    post.save!
-    redirect_to root_path, success: "スタンプを完了しました！"
+    if current_user.stamps_posts.include?(post)
+      post.errors.add :stamp, "はすでにセットしています"
+      render turbo_stream: turbo_stream.replace(
+        'stamp_error',
+        partial: 'shared/error_messages',
+        locals: { object: post },
+      )
+    else
+      current_user.stamps_posts << post
+      redirect_to stamps_path, success: "ラリーを開始します！"  
+    end
   end
 end

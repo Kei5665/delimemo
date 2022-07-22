@@ -4,6 +4,7 @@ ja:
       post: '投稿'
     attributes:
       post:
+        stamp: 'このスタンプ'
         title: 'タイトル'
         body: '詳細'
         image: '画像'

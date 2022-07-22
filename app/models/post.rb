@@ -6,4 +6,5 @@ class Post < ApplicationRecord
   validates :latlng, presence: true
 
   has_one_attached :image
+  has_many :stamps, dependent: :destroy
 end
